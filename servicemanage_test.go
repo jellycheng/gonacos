@@ -7,13 +7,13 @@ import (
 
 // go test -run=TestNacosServiceManage_RegisterInstance
 func TestNacosServiceManage_RegisterInstance(t *testing.T) {
-	nacosServerConfig := NacosServerConfig{ApiUrl: "http://127.0.0.1:8848", BeatInterval: 5 * 1000}
+	nacosServerConfig := NacosServerConfig{ApiUrl: "http://console.nacos.io", BeatInterval: 5 * 1000}
 	nacosServiceManage := NewNacosServiceManage(nacosServerConfig)
 	dto := NacosInstanceDto{
 		ServiceName: StringPtr("mobile-api"),
 		Ip:          StringPtr("127.0.0.1"),
 		Port:        Int64Ptr(80),
-		NamespaceId: StringPtr("dev"),
+		NamespaceId: StringPtr("st1"),
 		GroupName:   StringPtr("mobile-api"),
 	}
 	if ok, err := nacosServiceManage.RegisterInstance(dto, true); ok {
@@ -28,13 +28,13 @@ func TestNacosServiceManage_RegisterInstance(t *testing.T) {
 
 // go test -run=TestNacosServiceManage_SendBeat
 func TestNacosServiceManage_SendBeat(t *testing.T) {
-	nacosServerConfig := NacosServerConfig{ApiUrl: "http://127.0.0.1:8848", BeatInterval: 5 * 1000}
+	nacosServerConfig := NacosServerConfig{ApiUrl: "http://console.nacos.io", BeatInterval: 5 * 1000}
 	nacosServiceManage := NewNacosServiceManage(nacosServerConfig)
 	dto := BeatDto{
 		ServiceName: StringPtr("mobile-api"),
 		Ip:          StringPtr("127.0.0.1"),
 		Port:        Int64Ptr(80),
-		NamespaceId: StringPtr("dev"),
+		NamespaceId: StringPtr("st1"),
 		GroupName:   StringPtr("mobile-api"),
 	}
 	if ok, err := nacosServiceManage.SendBeat(dto); ok {
