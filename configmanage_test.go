@@ -11,9 +11,9 @@ func TestNewNacosConfigManage(t *testing.T) {
 	nacosConfigManage := NewNacosConfigManage(nacosServerConfig)
 
 	dto := NacosConfigDto{
-		Tenant: StringPtr("public"),
+		Tenant: StringPtr(DefaultNamespaceId),
 		DataId: StringPtr("application-dev.yaml"),
-		Group:  StringPtr("DEFAULT_GROUP"),
+		Group:  StringPtr(DefaultGroup),
 	}
 	if res, err := nacosConfigManage.GetConfig(dto); err == nil {
 		fmt.Println(res)
