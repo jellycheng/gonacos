@@ -21,5 +21,6 @@
 go.work
 
 go.sum
+cjs.go
 cjs_test.go
 .DS_Store
