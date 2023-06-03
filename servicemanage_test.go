@@ -5,42 +5,37 @@ import (
 	"testing"
 )
 
-// go test -run=TestNacosServiceManage_RegisterInstance
-func TestNacosServiceManage_RegisterInstance(t *testing.T) {
-	nacosServerConfig := NacosServerConfig{ApiUrl: "http://console.nacos.io", BeatInterval: 5 * 1000}
+// go test -run=TestNacosServiceManage_CreateService
+func TestNacosServiceManage_CreateService(t *testing.T) {
+	nacosServerConfig := NacosServerConfig{ApiUrl: "http://console.nacos.io"}
 	nacosServiceManage := NewNacosServiceManage(nacosServerConfig)
-	dto := NacosInstanceDto{
-		ServiceName: StringPtr("mobile-api"),
-		Ip:          StringPtr("127.0.0.1"),
-		Port:        Int64Ptr(80),
-		NamespaceId: StringPtr("st1"),
+	dto := NacosServiceDto{
+		ServiceName: StringPtr("mobile-api-01"),
+		NamespaceId: StringPtr("dde761c3-96be-4a98-b349-3c2289033322"),
 		GroupName:   StringPtr("mobile-api"),
+		//ProtectThreshold: Float64Ptr(1),
 	}
-	if ok, err := nacosServiceManage.RegisterInstance(dto, true); ok {
-		fmt.Println("服务注册成功")
-		if nacosServiceManage.GetIsAutoBeat() {
-			//select {}
-		}
+	if content, err := nacosServiceManage.CreateService(dto); err == nil {
+		fmt.Println("服务创建成功", content)
 	} else {
-		fmt.Println("服务注册失败：", err.Error())
+		fmt.Println("服务创建失败：", err.Error())
 	}
 }
 
-// go test -run=TestNacosServiceManage_SendBeat
-func TestNacosServiceManage_SendBeat(t *testing.T) {
-	nacosServerConfig := NacosServerConfig{ApiUrl: "http://console.nacos.io", BeatInterval: 5 * 1000}
+// go test -run=TestNacosServiceManage_EditService
+func TestNacosServiceManage_EditService(t *testing.T) {
+	nacosServerConfig := NacosServerConfig{ApiUrl: "http://console.nacos.io"}
 	nacosServiceManage := NewNacosServiceManage(nacosServerConfig)
-	dto := BeatDto{
-		ServiceName: StringPtr("mobile-api"),
-		Ip:          StringPtr("127.0.0.1"),
-		Port:        Int64Ptr(80),
-		NamespaceId: StringPtr("st1"),
-		GroupName:   StringPtr("mobile-api"),
+	dto := NacosServiceDto{
+		ServiceName:      StringPtr("mobile-api-01"),
+		NamespaceId:      StringPtr("dde761c3-96be-4a98-b349-3c2289033322"),
+		GroupName:        StringPtr("mobile-api"),
+		ProtectThreshold: Float64Ptr(1),
+		Metadata:         StringPtr("helloworld=abc"),
 	}
-	if ok, err := nacosServiceManage.SendBeat(dto); ok {
-		fmt.Println("发送成功")
+	if content, err := nacosServiceManage.EditService(dto); err == nil {
+		fmt.Println("修改服务成功", content)
 	} else {
-		fmt.Println("发送失败：", err.Error())
+		fmt.Println("修改服务失败：", err.Error())
 	}
-
 }

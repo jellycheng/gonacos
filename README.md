@@ -69,7 +69,7 @@ func main()  {
 }
 
 func RegisterMobileapi(nacosServerConfig gonacos.NacosServerConfig)  {
-	nacosServiceManage := gonacos.NewNacosServiceManage(nacosServerConfig)
+	nacosInstanceManage := gonacos.NewNacosInstanceManage(nacosServerConfig)
 	dto := gonacos.NacosInstanceDto{
 		ServiceName: gonacos.StringPtr("mobile-api"),
 		Ip:          gonacos.StringPtr("10.1.20.2"),
@@ -77,7 +77,7 @@ func RegisterMobileapi(nacosServerConfig gonacos.NacosServerConfig)  {
 		NamespaceId: gonacos.StringPtr("dde761c3-96be-4a98-b349-3c2289033322"),
 		GroupName:   gonacos.StringPtr("mall"),
 	}
-	if ok, err := nacosServiceManage.RegisterInstance(dto, true); ok {
+	if ok, err := nacosInstanceManage.RegisterInstance(dto, true); ok {
 		fmt.Println("mobile-api注册成功")
 	} else {
 		fmt.Println("mobile-api注册失败：", err.Error())

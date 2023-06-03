@@ -49,11 +49,11 @@ func (m *NacosConfigManage) GetConfig(dto NacosConfigDto) (string, error) {
 // 监听配置变化
 func (m *NacosConfigManage) ListenConfig(namespace, group, dataId string, fn func(cnf string)) {
 	dto := NacosConfigDto{
-			Tenant: StringPtr(namespace),
-			Group: StringPtr(group),
-			DataId: StringPtr(dataId),
+		Tenant: StringPtr(namespace),
+		Group:  StringPtr(group),
+		DataId: StringPtr(dataId),
 	}
-	if cfgContent,err := m.GetConfig(dto);err==nil{
+	if cfgContent, err := m.GetConfig(dto); err == nil {
 		fn(cfgContent)
 		contentMd5 := MD5(cfgContent)
 		beatTime := 2
@@ -64,10 +64,10 @@ func (m *NacosConfigManage) ListenConfig(namespace, group, dataId string, fn fun
 			for {
 				select {
 				case <-timeBeat.C:
-					if ischange, listenErr := m.GetListenConfig(namespace, group, dataId,contentMd5); listenErr != nil {
+					if ischange, listenErr := m.GetListenConfig(namespace, group, dataId, contentMd5); listenErr != nil {
 						cancel()
-					} else if ischange {// 获取新配置
-						if cfgContentNew,errNew := m.GetConfig(dto);errNew==nil{
+					} else if ischange { // 获取新配置
+						if cfgContentNew, errNew := m.GetConfig(dto); errNew == nil {
 							contentMd5 = MD5(cfgContentNew)
 							fn(cfgContentNew)
 						}
@@ -91,8 +91,8 @@ func (m *NacosConfigManage) GetListenConfig(namespace, group, dataId, contentMd5
 	params["Listening-Configs"] = content
 	resp, err := gcurl.Post(urlStr, gcurl.Options{
 		Headers: map[string]interface{}{
-			"Content-Type": gcurl.ContentTypeForm,
-			"User-Agent":   "gcurl/1.0",
+			"Content-Type":         gcurl.ContentTypeForm,
+			"User-Agent":           "gcurl/1.0",
 			"Long-Pulling-Timeout": 3000,
 		},
 		FormParams: params,

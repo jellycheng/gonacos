@@ -34,7 +34,7 @@ func (m *NacosNamespaceManage) GetNamespaces() (string, error) {
 }
 
 // 创建命名空间
-func (m *NacosNamespaceManage) CreateNamespace(dto NacosNamespaceCreateDto) (bool, error) {
+func (m *NacosNamespaceManage) CreateNamespace(dto NacosNamespaceCreateDto) (string, error) {
 	urlStr := fmt.Sprintf("%s/nacos/v1/console/namespaces", m.NacosServerConfig.ApiUrl)
 	params := map[string]interface{}{}
 	if dto.CustomNamespaceId != nil {
@@ -55,20 +55,20 @@ func (m *NacosNamespaceManage) CreateNamespace(dto NacosNamespaceCreateDto) (boo
 		Query: params,
 	})
 	if err != nil {
-		return false, err
+		return "", err
 	} else {
 		body, _ := resp.GetBody()
 		if resp.GetStatusCode() != 200 {
-			return false, errors.New(body.ToString())
+			return "", errors.New(body.ToString())
 		} else {
-			return true, nil
+			return body.ToString(), nil
 		}
 	}
 
 }
 
 // 修改命名空间
-func (m *NacosNamespaceManage) EditNamespace(dto NacosNamespaceEditDto) (bool, error) {
+func (m *NacosNamespaceManage) EditNamespace(dto NacosNamespaceEditDto) (string, error) {
 	urlStr := fmt.Sprintf("%s/nacos/v1/console/namespaces", m.NacosServerConfig.ApiUrl)
 	params := map[string]interface{}{}
 	if dto.Namespace != nil {
@@ -89,23 +89,23 @@ func (m *NacosNamespaceManage) EditNamespace(dto NacosNamespaceEditDto) (bool, e
 		Query: params,
 	})
 	if err != nil {
-		return false, err
+		return "", err
 	} else {
 		body, _ := resp.GetBody()
 		if resp.GetStatusCode() != 200 {
-			return false, errors.New(body.ToString())
+			return "", errors.New(body.ToString())
 		} else {
-			return true, nil
+			return body.ToString(), nil
 		}
 	}
 
 }
 
 // 删除命名空间
-func (m *NacosNamespaceManage) DeleteNamespace(namespaceId string) (bool, error) {
+func (m *NacosNamespaceManage) DeleteNamespace(namespaceId string) (string, error) {
 	urlStr := fmt.Sprintf("%s/nacos/v1/console/namespaces", m.NacosServerConfig.ApiUrl)
 	if namespaceId == "" {
-		return false, errors.New("命名空间id不能为空")
+		return "", errors.New("命名空间id不能为空")
 	}
 	params := map[string]interface{}{
 		"namespaceId": namespaceId,
@@ -118,13 +118,13 @@ func (m *NacosNamespaceManage) DeleteNamespace(namespaceId string) (bool, error)
 		Query: params,
 	})
 	if err != nil {
-		return false, err
+		return "", err
 	} else {
 		body, _ := resp.GetBody()
 		if resp.GetStatusCode() != 200 {
-			return false, errors.New(body.ToString())
+			return "", errors.New(body.ToString())
 		} else {
-			return true, nil
+			return body.ToString(), nil
 		}
 	}
 

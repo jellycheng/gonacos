@@ -14,8 +14,8 @@ func TestNacosNamespaceManage_CreateNamespace(t *testing.T) {
 		NamespaceName:     StringPtr("st1"),
 		NamespaceDesc:     StringPtr("st1环境"),
 	}
-	if ok, err := nacosNamespaceManage.CreateNamespace(dto); ok {
-		fmt.Println("命名空间创建成功")
+	if content, err := nacosNamespaceManage.CreateNamespace(dto); err == nil {
+		fmt.Println("命名空间创建成功", content)
 	} else {
 		fmt.Println("命名空间创建失败：", err.Error())
 	}
